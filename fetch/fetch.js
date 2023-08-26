@@ -9,59 +9,13 @@ router.get("/", (req, res) => {
         if (err)
             console.log('Error in connection:- ', err)
         else {
-            let db = conn.db('miniprj')
+            let db = conn.db('nodedb')
             db.collection('products').find().toArray((err, array) => {
                 if (err)
                     console.log('Error :- ' + err)
                 else {
                     console.log('Data sent')
                     res.json(array)
-                    conn.close()
-                }
-            })
-        }
-    })
-})
-
-router.post("/auth", (req, res) => {
-    let uname = req.body.uname
-    let upwd = req.body.upwd
-    let obj = { uname, upwd }
-    mcl.connect(url, (err, conn) => {
-        if (err)
-            console.log('Error in connection:- ', err)
-        else {
-            let db = conn.db("miniprj")
-            db.collection('users').find(obj).toArray((err, array) => {
-                if (err)
-                    console.log(err)
-                else {
-                    if (array.length > 0)
-                        res.json({ 'auth': 'success', 'user': uname })
-                    else
-                        res.json({ 'auth': 'failed' })
-                    console.log('Auth response sent')
-                    conn.close()
-                }
-            })
-        }
-    })
-})
-
-router.post("/fetchCart", (req, res) => {
-    let uname = req.body.uname
-    let obj = { uname }
-    mcl.connect(url, (err, conn) => {
-        if (err)
-            console.log('Error in connection:- ', err)
-        else {
-            let db = conn.db("miniprj")
-            db.collection('cart').find(obj).toArray((err, array) => {
-                if (err)
-                    console.log(err)
-                else {
-                    res.json(array)
-                    console.log(`Cart response for ${obj.uname} sent`)
                     conn.close()
                 }
             })
