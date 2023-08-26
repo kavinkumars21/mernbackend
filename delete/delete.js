@@ -6,13 +6,13 @@ let router = express.Router()
 
 router.post("/", (req, res) => {
     let obj = {
-        p_id: req.body.p_id
+        "p_id": req.body.p_id
     }
     mcl.connect(url, (err, conn) => {
         if (err)
-            console.log('Error in connection :- ', err)
+            console.log('Error in connection:- ', err)
         else {
-            let db = conn.db('nodejs')
+            let db = conn.db('nodedb')
             db.collection('products').deleteOne(obj, (err, result) => {
                 if (err)
                     res.json({ 'delete': 'Error ' + err })
@@ -24,6 +24,35 @@ router.post("/", (req, res) => {
                     else {
                         console.log('Data Not deleted')
                         res.json({ 'delete': 'Record Not found' })
+                    }
+                    conn.close()
+                }
+            })
+        }
+    })
+})
+
+router.post("/deleteCart", (req, res) => {
+    let obj = {
+        "p_id": req.body.p_id,
+        "uname": req.body.uname
+    }
+    mcl.connect(url, (err, conn) => {
+        if (err)
+            console.log('Error in connection:- ', err)
+        else {
+            let db = conn.db('miniprj')
+            db.collection('cart').deleteOne(obj, (err, result) => {
+                if (err)
+                    res.json({ 'cartDelete': 'Error ' + err })
+                else {
+                    if (result.deletedCount != 0) {
+                        console.log(`Cart data fro ${obj.uname} deleted`)
+                        res.json({ 'cartDelete': 'success' })
+                    }
+                    else {
+                        console.log('Cart Data Not deleted')
+                        res.json({ 'cartDelete': 'Record Not found' })
                     }
                     conn.close()
                 }

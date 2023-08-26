@@ -19,5 +19,5 @@ app.use("/insert", insert)
 app.use("/update", update)
 app.use("/delete", remov)
 app.listen(port, () => {
-    console.log("Server listening port no:- ", port)
+    console.log("Server listening port", port)
 })
